@@ -80,3 +80,14 @@ test('super admin can securely send a push notification to the owner', () => {
   assert.match(routes, /role: 'owner'/);
   assert.match(dashboard, /superAdminNotificationSection/);
 });
+
+test('mobile dashboard controls share a consistent width and the photo line fits one card', () => {
+  const dashboardCss = read('frontend/dashboard.css');
+  const homeCss = read('frontend/style.css');
+  const homeJs = read('frontend/script.js');
+  assert.match(dashboardCss, /gallery-toolbar>\*\{width:100%/);
+  assert.match(dashboardCss, /moving-actions\{display:grid/);
+  assert.match(homeCss, /grid-auto-columns:100%/);
+  assert.match(homeCss, /aspect-ratio:4\/5/);
+  assert.match(homeJs, /getBoundingClientRect\(\)\.width \+ gap/);
+});

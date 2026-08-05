@@ -37,7 +37,10 @@ async function loadGallery() {
 }
 
 function scrollGallery(direction) {
-  $("#photoLine").scrollBy({ left: direction * -380, behavior: "smooth" });
+  const line = $("#photoLine");
+  const card = line.querySelector(".photo-card");
+  const gap = Number.parseFloat(getComputedStyle(line).columnGap) || 0;
+  line.scrollBy({ left: direction * -(card ? card.getBoundingClientRect().width + gap : line.clientWidth), behavior: "smooth" });
 }
 
 function openLightbox(index) {
