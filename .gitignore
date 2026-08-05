@@ -1,0 +1,14 @@
+.DS_Store
+.env
+.env.*
+!.env.example
+node_modules/
+npm-debug.log*
+.vscode/
+coverage/
+dist/
+.netlify/
+.vercel/
+uploads/
+backend/uploads/
+aaa.txt

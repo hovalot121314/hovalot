@@ -1,0 +1,7 @@
+const CACHE='hovalot-owner-pwa-v1';
+const ASSETS=['./dashboard.html','./admin.html','./dashboard.css','./dashboard.js','./moving-manifest.webmanifest','./images/Logo.png'];
+self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS)).then(()=>self.skipWaiting())));
+self.addEventListener('activate',event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key!==CACHE).map(key=>caches.delete(key)))).then(()=>self.clients.claim())));
+self.addEventListener('fetch',event=>{if(event.request.method==='GET')event.respondWith(fetch(event.request).catch(()=>caches.match(event.request)))});
+self.addEventListener('push',event=>{const data=event.data?event.data.json():{};event.waitUntil(Promise.all([self.registration.showNotification(data.title||'תזכורת חדשה',{body:data.body||'',icon:'./images/Logo.png',badge:'./images/Logo.png',tag:data.tag||'moving-reminder',data:{url:data.url||'./dashboard.html'}}),clients.matchAll({type:'window',includeUncontrolled:true}).then(list=>list.forEach(client=>client.postMessage({type:'moving-message'})))]))});
+self.addEventListener('notificationclick',event=>{event.notification.close();event.waitUntil(clients.matchAll({type:'window',includeUncontrolled:true}).then(list=>{for(const client of list){if('focus'in client){client.navigate(event.notification.data.url);return client.focus()}}return clients.openWindow(event.notification.data.url)}))});

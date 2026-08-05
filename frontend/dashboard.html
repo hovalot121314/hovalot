@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#172632">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="ניהול הובלות">
+  <title>ניהול הובלות חיפה והקריות</title>
+  <link rel="manifest" href="moving-manifest.webmanifest">
+  <link rel="apple-touch-icon" href="images/Logo.png">
+  <link rel="stylesheet" href="dashboard.css?v=1">
+</head>
+<body>
+  <div id="installBanner" class="install-banner hidden">
+    <div><strong>התקנת אפליקציית הניהול</strong><p>הוסף את הדשבורד למסך הבית כדי לקבל התראות.</p></div>
+    <button id="installButton" class="gold hidden">התקנה</button>
+    <p id="iosInstall" class="hidden">ב־iPhone: פתח ב־Safari ← שיתוף □↑ ← הוספה למסך הבית.</p>
+  </div>
+
+  <header class="topbar">
+    <div class="brand"><span class="brand-mark">ח</span><div><strong>הובלות חיפה והקריות</strong><small>אפליקציית ניהול</small></div></div>
+    <div class="top-actions">
+      <button id="enableNotifications" class="outline">🔔 הפעל התראות</button>
+      <button id="messagesButton" class="outline messages-button">✉ הודעות <b id="messagesBadge" class="badge hidden">0</b></button>
+      <button id="logoutButton" class="outline">יציאה</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <div class="section-title row-title"><div><span>01</span><h1>הובלות</h1></div><button id="refreshButton" class="secondary">↻ רענון</button></div>
+      <div class="filter-row"><label>סינון לפי תאריך<input id="dateFilter" type="date"></label><button id="showAllButton" class="secondary">הצג הכל</button><strong id="movingCount">0 הובלות</strong></div>
+      <div id="movingsList" class="movings-list"></div>
+    </section>
+
+    <section class="card">
+      <div class="section-title"><div><span>02</span><h2>הוספת הובלה</h2></div><p>הזן את כל פרטי הלקוח וההובלה.</p></div>
+      <form id="movingForm" class="form-grid">
+        <label>שם הלקוח<input id="customerName" required maxlength="50"></label>
+        <label>טלפון<input id="customerPhone" required inputmode="tel" placeholder="05XXXXXXXX"></label>
+        <label>כתובת איסוף<input id="pickupAddress" required maxlength="180"></label>
+        <label>כתובת יעד<input id="destinationAddress" required maxlength="180"></label>
+        <label>סוג ההובלה<select id="service" required><option value="">בחר שירות</option></select></label>
+        <label>תאריך<input id="movingDate" type="date" required></label>
+        <label>שעה<input id="movingTime" type="time" required></label>
+        <div class="form-submit"><button type="submit">הוסף הובלה</button></div>
+      </form>
+      <p id="movingMessage" class="form-message"></p>
+    </section>
+
+    <section class="card">
+      <div class="section-title"><div><span>03</span><h2>גלריה</h2></div><p>העלאה, סידור ומחיקת תמונות האתר.</p></div>
+      <div class="gallery-toolbar"><input id="imageInput" type="file" accept="image/*"><button id="uploadImageButton">העלאת תמונה</button><button id="saveGalleryOrderButton" class="gold">שמירת סדר</button></div>
+      <p id="galleryMessage" class="form-message"></p>
+      <div id="galleryContainer" class="gallery-grid"></div>
+    </section>
+  </main>
+
+  <div id="messagesPanel" class="drawer-backdrop hidden" role="dialog" aria-modal="true">
+    <aside class="drawer"><div class="drawer-head"><h2>לוח הודעות</h2><button id="closeMessages" class="secondary">סגירה</button></div><div id="messagesList" class="message-list"></div></aside>
+  </div>
+
+  <div id="editModal" class="modal-backdrop hidden" role="dialog" aria-modal="true">
+    <div class="modal-card"><div class="drawer-head"><h2>עריכת הובלה</h2><button id="closeEdit" class="secondary">סגירה</button></div>
+      <form id="editForm" class="form-grid">
+        <input id="editId" type="hidden">
+        <label>שם הלקוח<input id="editName" required></label><label>טלפון<input id="editPhone" required inputmode="tel"></label>
+        <label>כתובת איסוף<input id="editPickup" required></label><label>כתובת יעד<input id="editDestination" required></label>
+        <label>שירות<select id="editService" required></select></label><label>משך בדקות<input id="editDuration" type="number" min="5" step="5"></label>
+        <label>תאריך<input id="editDate" type="date" required></label><label>שעה<input id="editTime" type="time" required></label>
+        <label>סטטוס<select id="editStatus"><option value="confirmed">מאושר</option><option value="pending">ממתין</option><option value="cancelled">מבוטל</option><option value="completed">הושלם</option><option value="no-show">לא בוצע</option></select></label>
+        <label class="wide">הערה פנימית<textarea id="editNotes" rows="3"></textarea></label>
+        <div class="form-submit"><button type="submit">שמירת שינויים</button></div>
+      </form><p id="editMessage" class="form-message"></p>
+    </div>
+  </div>
+
+  <script src="dashboard.js?v=1"></script>
+</body>
+</html>

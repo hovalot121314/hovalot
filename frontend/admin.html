@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#172632">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="manifest" href="moving-manifest.webmanifest">
+  <link rel="apple-touch-icon" href="images/Logo.png">
+  <title>כניסת בעל העסק | הובלות חיפה והקריות</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800;900&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root{--ink:#111c24;--navy:#172632;--navy-light:#223746;--gold:#c99a4a;--gold-light:#e0b96d;--cream:#f5f1e9;--muted:#73797d;--line:#ddd8ce;--danger:#a8443d;--success:#287454}
+    *{box-sizing:border-box}
+    html,body{min-height:100%}
+    body{margin:0;background:var(--cream);color:var(--ink);font-family:Heebo,Arial,sans-serif}
+    button,input{font:inherit}
+    a{color:inherit;text-decoration:none}
+    .login-page{min-height:100vh;display:grid;grid-template-columns:minmax(420px,44%) 1fr}
+    .form-side{background:#fff;display:flex;flex-direction:column;position:relative;padding:38px clamp(34px,5vw,78px)}
+    .brand{display:flex;align-items:center;gap:13px;width:max-content}
+    .brand-mark{width:45px;height:45px;display:grid;place-items:center;background:var(--navy);border:1px solid var(--gold);color:var(--gold-light);font:700 27px Playfair Display,serif}
+    .brand strong,.brand small{display:block}
+    .brand strong{font-size:16px;line-height:1.15}
+    .brand small{font-size:10px;color:#777;letter-spacing:1.2px;margin-top:3px}
+    .login-content{width:100%;max-width:430px;margin:auto}
+    .eyebrow{display:flex;align-items:center;gap:11px;color:#99712f;font-size:12px;font-weight:800;letter-spacing:1.3px;margin:0 0 13px}
+    .eyebrow:before{content:"";width:30px;height:1px;background:currentColor}
+    h1{font-size:43px;letter-spacing:-1.2px;line-height:1.1;margin:0 0 14px;color:var(--navy)}
+    .subtitle{color:var(--muted);font-size:15px;margin:0 0 36px}
+    .form-field{margin-bottom:18px}
+    label{display:block;font-size:13px;font-weight:700;margin-bottom:8px}
+    .input-wrap{position:relative}
+    .input-wrap svg{position:absolute;right:16px;top:50%;transform:translateY(-50%);width:19px;color:#92989b}
+    input{width:100%;height:55px;border:1px solid var(--line);background:#fff;padding:0 48px 0 16px;outline:none;color:var(--ink);transition:.2s}
+    input::placeholder{color:#a2a5a7}
+    input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,154,74,.13)}
+    .login-button{width:100%;height:56px;margin-top:8px;border:0;background:var(--navy);color:#fff;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:22px;transition:.2s}
+    .login-button:hover{background:var(--navy-light);transform:translateY(-2px)}
+    .login-button:disabled{opacity:.7;cursor:wait;transform:none}
+    .login-button span{color:var(--gold-light);font-size:20px}
+    .back-link{display:block;text-align:center;margin-top:22px;color:#697176;font-size:13px}
+    .back-link:hover{color:var(--gold)}
+    .message{display:none;margin-top:15px;padding:11px 14px;text-align:center;font-size:13px}
+    .message.error{display:block;background:#fff1f0;color:var(--danger);border:1px solid #efd0cd}
+    .message.success{display:block;background:#edf8f2;color:var(--success);border:1px solid #c7e2d5}
+    .security-note{display:flex;align-items:center;gap:8px;color:#8a8f92;font-size:11px;margin-top:28px;justify-content:center}
+    .security-note svg{width:15px}
+    .visual-side{position:relative;overflow:hidden;min-height:100vh;background:var(--navy)}
+    .visual-side>img{width:100%;height:100%;object-fit:cover;object-position:center}
+    .visual-side:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(12,20,26,.12),rgba(12,20,26,.86))}
+    .visual-content{position:absolute;z-index:1;right:clamp(35px,6vw,90px);left:clamp(35px,6vw,90px);bottom:70px;color:#fff}
+    .visual-content .line{width:48px;height:2px;background:var(--gold);margin-bottom:21px}
+    .visual-content h2{font-size:clamp(36px,4vw,61px);line-height:1.08;letter-spacing:-1.6px;margin:0 0 17px;max-width:680px}
+    .visual-content h2 em{color:var(--gold-light);font-family:Playfair Display,serif;font-style:normal}
+    .visual-content p{max-width:590px;color:#d8dcde;font-size:17px;margin:0}
+    .visual-badge{position:absolute;z-index:2;top:40px;left:40px;border:1px solid rgba(255,255,255,.25);color:#fff;padding:10px 14px;font-size:11px;letter-spacing:1px;background:rgba(13,23,29,.3);backdrop-filter:blur(8px)}
+    .footer-copy{font-size:11px;color:#999;margin-top:auto;padding-top:30px}
+    @media(max-width:850px){
+      .login-page{grid-template-columns:1fr}
+      .visual-side{position:absolute;inset:0;min-height:100%;z-index:-1}
+      .visual-side:after{background:rgba(14,23,29,.78)}
+      .form-side{margin:20px;min-height:calc(100vh - 40px);background:rgba(255,255,255,.97);padding:28px 24px}
+      .login-content{margin:60px auto 30px}
+      .visual-content,.visual-badge{display:none}
+      h1{font-size:36px}
+    }
+    @media(max-width:450px){.form-side{margin:0;min-height:100vh}.login-content{margin-top:48px}.footer-copy{text-align:center}}
+  </style>
+</head>
+<body>
+  <main class="login-page">
+    <section class="form-side">
+      <a href="index.html" class="brand" aria-label="חזרה לעמוד הבית">
+        <span class="brand-mark">ח</span>
+        <span><strong>הובלות חיפה והקריות</strong><small>מקצועיות. אחריות. שקט.</small></span>
+      </a>
+
+      <div class="login-content">
+        <p class="eyebrow">אזור ניהול מאובטח</p>
+        <h1>ברוכים הבאים.</h1>
+        <p class="subtitle">התחברו לניהול ההובלות, הזמינות, השירותים והתמונות של העסק.</p>
+
+        <form id="loginForm">
+          <div class="form-field">
+            <label for="username">שם משתמש</label>
+            <div class="input-wrap">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="8" r="4"/><path d="M4 21c.7-4.1 3.4-6 8-6s7.3 1.9 8 6"/></svg>
+              <input id="username" autocomplete="username" placeholder="הקלידו שם משתמש" autofocus>
+            </div>
+          </div>
+          <div class="form-field">
+            <label for="password">סיסמה</label>
+            <div class="input-wrap">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+              <input id="password" type="password" autocomplete="current-password" placeholder="הקלידו סיסמה">
+            </div>
+          </div>
+          <button id="loginButton" class="login-button" type="submit">כניסה למערכת <span>←</span></button>
+          <div id="loginMessage" class="message" role="status"></div>
+        </form>
+
+        <div class="security-note">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3 5 6v5c0 5 3 8.5 7 10 4-1.5 7-5 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/></svg>
+          החיבור מאובטח ומיועד לבעל העסק בלבד
+        </div>
+        <a href="index.html" class="back-link">חזרה לאתר הראשי</a>
+      </div>
+      <p class="footer-copy">© 2026 הובלות חיפה והקריות</p>
+    </section>
+
+    <section class="visual-side" aria-hidden="true">
+      <img src="images/moving-hero.png" alt="">
+      <span class="visual-badge">HAIFA &amp; KRAYOT MOVING</span>
+      <div class="visual-content">
+        <div class="line"></div>
+        <h2>מנהלים כל הובלה<br><em>בדיוק ובביטחון.</em></h2>
+        <p>כל הבקשות, שעות הפעילות והשירותים — במקום אחד.</p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    if ('serviceWorker' in navigator) navigator.serviceWorker.register('./moving-sw.js');
+    const IS_LOCAL = ["localhost", "127.0.0.1"].includes(window.location.hostname);
+    const API_URL = IS_LOCAL
+      ? "http://localhost:5001/api"
+      : "https://railway-deploy-production-adc6.up.railway.app/api";
+    const form = document.getElementById("loginForm");
+    const button = document.getElementById("loginButton");
+    const messageBox = document.getElementById("loginMessage");
+
+    form.addEventListener("submit", login);
+
+    async function login(event) {
+      event.preventDefault();
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value;
+
+      if (!username || !password) return showMessage("יש להזין שם משתמש וסיסמה", "error");
+
+      button.disabled = true;
+      button.innerHTML = "מתחברים למערכת…";
+      messageBox.className = "message";
+      messageBox.textContent = "";
+
+      try {
+        const response = await fetch(`${API_URL}/admin/login`, {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify({username, password})
+        });
+        const data = await response.json();
+
+        if (!response.ok || !data.token) throw new Error("שם המשתמש או הסיסמה אינם נכונים");
+        localStorage.setItem("token", data.token);
+        showMessage("ההתחברות הצליחה, מעבירים אתכם לדאשבורד…", "success");
+        setTimeout(() => { window.location.href = "dashboard.html"; }, 650);
+      } catch (error) {
+        showMessage(error.message || "לא ניתן להתחבר לשרת", "error");
+        button.disabled = false;
+        button.innerHTML = 'כניסה למערכת <span>←</span>';
+      }
+    }
+
+    function showMessage(text, type) {
+      messageBox.textContent = text;
+      messageBox.className = `message ${type}`;
+    }
+  </script>
+</body>
+</html>

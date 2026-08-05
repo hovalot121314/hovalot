@@ -1,0 +1,14 @@
+{
+  "name": "ניהול הובלות חיפה והקריות",
+  "short_name": "ניהול הובלות",
+  "description": "אפליקציית ניהול הובלות והתראות לבעל העסק",
+  "start_url": "./dashboard.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f5f1e9",
+  "theme_color": "#172632",
+  "lang": "he",
+  "dir": "rtl",
+  "icons": [{"src":"images/Logo.png","sizes":"any","type":"image/png","purpose":"any maskable"}]
+}
