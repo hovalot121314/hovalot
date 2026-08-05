@@ -91,3 +91,14 @@ test('mobile dashboard controls share a consistent width and the photo line fits
   assert.match(homeCss, /aspect-ratio:4\/5/);
   assert.match(homeJs, /getBoundingClientRect\(\)\.width \+ gap/);
 });
+
+test('iOS date and time fields use the same mobile dimensions as other controls', () => {
+  const dashboardCss = read('frontend/dashboard.css');
+  const dashboardHtml = read('frontend/dashboard.html');
+  const worker = read('frontend/moving-sw.js');
+  assert.match(dashboardCss, /input:not\(\[type="file"\]\).*height:50px/);
+  assert.match(dashboardCss, /input\[type="date"\].*-webkit-appearance:none/);
+  assert.match(dashboardCss, /min-inline-size:0/);
+  assert.match(dashboardHtml, /dashboard\.css\?v=4/);
+  assert.match(worker, /hovalot-owner-pwa-v3/);
+});
