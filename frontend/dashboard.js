@@ -1,5 +1,5 @@
 const IS_LOCAL=['localhost','127.0.0.1'].includes(location.hostname);
-const API_URL=IS_LOCAL?'http://localhost:5001/api':'https://railway-deploy-production-adc6.up.railway.app/api';
+const API_URL=IS_LOCAL?'http://localhost:5001/api':'https://hovalot-production.up.railway.app/api';
 const token=localStorage.getItem('token')||sessionStorage.getItem('token');
 if(!token)location.href='admin.html';
 const $=id=>document.getElementById(id);
