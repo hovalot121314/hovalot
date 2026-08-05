@@ -98,6 +98,10 @@
               <input id="password" type="password" autocomplete="current-password" placeholder="הקלידו סיסמה">
             </div>
           </div>
+          <label style="display:flex;align-items:center;gap:9px;margin:4px 0 18px;font-weight:700;cursor:pointer">
+            <input id="rememberMe" type="checkbox" checked style="width:18px;height:18px;accent-color:#c99a4a">
+            השאר אותי מחובר
+          </label>
           <button id="loginButton" class="login-button" type="submit">כניסה למערכת <span>←</span></button>
           <div id="loginMessage" class="message" role="status"></div>
         </form>
@@ -155,7 +159,10 @@
         const data = await response.json();
 
         if (!response.ok || !data.token) throw new Error("שם המשתמש או הסיסמה אינם נכונים");
-        localStorage.setItem("token", data.token);
+        const rememberMe = document.getElementById("rememberMe").checked;
+        localStorage.removeItem("token");
+        sessionStorage.removeItem("token");
+        (rememberMe ? localStorage : sessionStorage).setItem("token", data.token);
         showMessage("ההתחברות הצליחה, מעבירים אתכם לדאשבורד…", "success");
         setTimeout(() => { window.location.href = "dashboard.html"; }, 650);
       } catch (error) {

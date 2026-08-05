@@ -10,7 +10,7 @@
   <title>ניהול הובלות חיפה והקריות</title>
   <link rel="manifest" href="moving-manifest.webmanifest">
   <link rel="apple-touch-icon" href="images/Logo.png">
-  <link rel="stylesheet" href="dashboard.css?v=1">
+  <link rel="stylesheet" href="dashboard.css?v=2">
 </head>
 <body>
   <div id="installBanner" class="install-banner hidden">
@@ -29,32 +29,44 @@
   </header>
 
   <main class="container">
-    <section class="card">
-      <div class="section-title row-title"><div><span>01</span><h1>הובלות</h1></div><button id="refreshButton" class="secondary">↻ רענון</button></div>
-      <div class="filter-row"><label>סינון לפי תאריך<input id="dateFilter" type="date"></label><button id="showAllButton" class="secondary">הצג הכל</button><strong id="movingCount">0 הובלות</strong></div>
-      <div id="movingsList" class="movings-list"></div>
+    <section id="movingsSection" class="card dashboard-section">
+      <div class="section-title row-title"><div><span>01</span><h1>הובלות</h1></div><div class="section-controls"><button id="refreshButton" class="secondary">↻ רענון</button><button class="secondary collapse-button" data-section="movingsSection" aria-expanded="true">− הקטן</button></div></div>
+      <div class="section-body"><div class="filter-row"><label>סינון לפי תאריך<input id="dateFilter" type="date"></label><button id="showAllButton" class="secondary">הצג הכל</button><strong id="movingCount">0 הובלות</strong></div>
+      <div id="movingsList" class="movings-list"></div></div>
     </section>
 
-    <section class="card">
-      <div class="section-title"><div><span>02</span><h2>הוספת הובלה</h2></div><p>הזן את כל פרטי הלקוח וההובלה.</p></div>
-      <form id="movingForm" class="form-grid">
+    <section id="addMovingSection" class="card dashboard-section">
+      <div class="section-title"><div><span>02</span><h2>הוספת הובלה</h2></div><div class="section-controls"><p>הזן את כל פרטי הלקוח וההובלה.</p><button class="secondary collapse-button" data-section="addMovingSection" aria-expanded="true">− הקטן</button></div></div>
+      <div class="section-body"><form id="movingForm" class="form-grid">
         <label>שם הלקוח<input id="customerName" required maxlength="50"></label>
         <label>טלפון<input id="customerPhone" required inputmode="tel" placeholder="05XXXXXXXX"></label>
         <label>כתובת איסוף<input id="pickupAddress" required maxlength="180"></label>
         <label>כתובת יעד<input id="destinationAddress" required maxlength="180"></label>
         <label>סוג ההובלה<select id="service" required><option value="">בחר שירות</option></select></label>
         <label>תאריך<input id="movingDate" type="date" required></label>
-        <label>שעה<input id="movingTime" type="time" required></label>
+        <label>שעה<input id="movingTime" type="time" dir="ltr" required></label>
         <div class="form-submit"><button type="submit">הוסף הובלה</button></div>
       </form>
-      <p id="movingMessage" class="form-message"></p>
+      <p id="movingMessage" class="form-message"></p></div>
     </section>
 
-    <section class="card">
-      <div class="section-title"><div><span>03</span><h2>גלריה</h2></div><p>העלאה, סידור ומחיקת תמונות האתר.</p></div>
-      <div class="gallery-toolbar"><input id="imageInput" type="file" accept="image/*"><button id="uploadImageButton">העלאת תמונה</button><button id="saveGalleryOrderButton" class="gold">שמירת סדר</button></div>
+    <section id="gallerySection" class="card dashboard-section">
+      <div class="section-title"><div><span>03</span><h2>גלריה</h2></div><div class="section-controls"><p>העלאה, סידור ומחיקת תמונות האתר.</p><button class="secondary collapse-button" data-section="gallerySection" aria-expanded="true">− הקטן</button></div></div>
+      <div class="section-body"><div class="gallery-toolbar"><input id="imageInput" type="file" accept="image/*"><button id="uploadImageButton">העלאת תמונה</button><button id="saveGalleryOrderButton" class="gold">שמירת סדר</button></div>
       <p id="galleryMessage" class="form-message"></p>
-      <div id="galleryContainer" class="gallery-grid"></div>
+      <div id="galleryContainer" class="gallery-grid"></div></div>
+    </section>
+
+    <section id="superAdminNotificationSection" class="card dashboard-section hidden">
+      <div class="section-title"><div><span>04</span><h2>שליחת התראה לבעל העסק</h2></div><div class="section-controls"><p>ההתראה תישלח לטלפון ותופיע בלוח ההודעות של בעל העסק.</p><button class="secondary collapse-button" data-section="superAdminNotificationSection" aria-expanded="true">− הקטן</button></div></div>
+      <div class="section-body">
+        <form id="ownerNotificationForm" class="form-grid">
+          <label class="wide">כותרת ההתראה<input id="ownerNotificationTitle" maxlength="100" required placeholder="לדוגמה: הודעה חשובה"></label>
+          <label class="wide">תוכן ההודעה<textarea id="ownerNotificationBody" rows="4" maxlength="800" required placeholder="כתוב את ההודעה לבעל העסק"></textarea></label>
+          <div class="form-submit"><button type="submit">🔔 שליחת התראה</button></div>
+        </form>
+        <p id="ownerNotificationMessage" class="form-message"></p>
+      </div>
     </section>
   </main>
 
@@ -69,7 +81,7 @@
         <label>שם הלקוח<input id="editName" required></label><label>טלפון<input id="editPhone" required inputmode="tel"></label>
         <label>כתובת איסוף<input id="editPickup" required></label><label>כתובת יעד<input id="editDestination" required></label>
         <label>שירות<select id="editService" required></select></label><label>משך בדקות<input id="editDuration" type="number" min="5" step="5"></label>
-        <label>תאריך<input id="editDate" type="date" required></label><label>שעה<input id="editTime" type="time" required></label>
+        <label>תאריך<input id="editDate" type="date" required></label><label>שעה<input id="editTime" type="time" dir="ltr" required></label>
         <label>סטטוס<select id="editStatus"><option value="confirmed">מאושר</option><option value="pending">ממתין</option><option value="cancelled">מבוטל</option><option value="completed">הושלם</option><option value="no-show">לא בוצע</option></select></label>
         <label class="wide">הערה פנימית<textarea id="editNotes" rows="3"></textarea></label>
         <div class="form-submit"><button type="submit">שמירת שינויים</button></div>
@@ -77,6 +89,8 @@
     </div>
   </div>
 
-  <script src="dashboard.js?v=1"></script>
+  <button id="floatingRefreshButton" class="floating-refresh" type="button" aria-label="רענון הנתונים" title="רענון הנתונים">↻</button>
+
+  <script src="dashboard.js?v=2"></script>
 </body>
 </html>

@@ -28,7 +28,7 @@ class CronService {
         date: { $gte: now, $lte: new Date(now.getTime() + 24 * 60 * 60 * 1000) }
       }).sort({ date: 1 });
       if (!appointments.length) return;
-      const admins = await Admin.find().select('_id');
+      const admins = await Admin.find({ role: 'owner' }).select('_id');
       for (const appointment of appointments) {
         const instant = getAppointmentInstant(appointment);
         if (Number.isNaN(instant.getTime()) || instant < now) continue;

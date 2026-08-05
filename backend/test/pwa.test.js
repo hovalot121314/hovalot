@@ -49,3 +49,34 @@ test('dashboard includes WhatsApp, edit, and message deletion actions', () => {
   assert.match(dashboard, /deleteMessage/);
   assert.match(dashboard, /openEdit/);
 });
+
+test('dashboard supports remembered login, correct time direction, collapsible sections and refresh', () => {
+  const login = read('frontend/admin.html');
+  const dashboardHtml = read('frontend/dashboard.html');
+  const dashboardJs = read('frontend/dashboard.js');
+  assert.match(login, /rememberMe/);
+  assert.match(login, /sessionStorage/);
+  assert.match(dashboardHtml, /type="time" dir="ltr"/);
+  assert.equal((dashboardHtml.match(/collapse-button/g) || []).length, 4);
+  assert.match(dashboardHtml, /floatingRefreshButton/);
+  assert.match(dashboardJs, /setupCollapsibleSections/);
+});
+
+test('prepared WhatsApp messages contain emojis and appointment edit details', () => {
+  const dashboard = read('frontend/dashboard.js');
+  assert.match(dashboard, /🚚/);
+  assert.match(dashboard, /changesText/);
+  assert.match(dashboard, /האם לשלוח ללקוח הודעה עם הפרטים שעודכנו/);
+});
+
+test('super admin can securely send a push notification to the owner', () => {
+  const model = read('backend/models/Admin.js');
+  const middleware = read('backend/middleware/authMiddleware.js');
+  const routes = read('backend/routes/pushRoutes.js');
+  const dashboard = read('frontend/dashboard.html');
+  assert.match(model, /superadmin/);
+  assert.match(middleware, /requireSuperAdmin/);
+  assert.match(routes, /owner-notification/);
+  assert.match(routes, /role: 'owner'/);
+  assert.match(dashboard, /superAdminNotificationSection/);
+});
