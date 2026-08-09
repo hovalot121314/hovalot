@@ -102,3 +102,13 @@ test('iOS date and time fields use the same mobile dimensions as other controls'
   assert.match(dashboardHtml, /dashboard\.css\?v=4/);
   assert.match(worker, /hovalot-owner-pwa-v3/);
 });
+
+test('gallery starts on the left and advances with the right arrow', () => {
+  const homeCss = read('frontend/style.css');
+  const homeHtml = read('frontend/index.html');
+  const homeJs = read('frontend/script.js');
+  assert.match(homeCss, /\.photo-line\{direction:ltr/);
+  assert.match(homeCss, /\.photo-card\{direction:rtl/);
+  assert.match(homeHtml, /id="galleryPrev"[^>]*>→<\/button>/);
+  assert.match(homeJs, /galleryPrev.*scrollGallery\(-1\)/);
+});
