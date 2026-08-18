@@ -12,16 +12,11 @@ const {
 } = require("../controllers/bookingController");
 
 const {
-  getAvailableSlots
-} = require("../controllers/availabilityController");
-
-const {
   updateAppointment
 } = require("../controllers/appointmentEditController");
 const { protect } = require('../middleware/authMiddleware');
 
 router.post("/", protect, createAppointment);
-router.get("/available/:date", getAvailableSlots);
 
 router.get("/", protect, getAllAppointments);
 router.get("/:id", protect, getAppointment);

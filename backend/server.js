@@ -10,14 +10,12 @@ const appointmentRoutes = require('./routes/appointmentRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const serviceRoutes = require('./routes/serviceRoutes');
 const galleryRoutes = require('./routes/galleryRoutes');
-const settingsRoutes = require('./routes/settingsRoutes');
 const pushRoutes = require('./routes/pushRoutes');
 const messageRoutes = require('./routes/messageRoutes');
 
 const adminController = require('./controllers/adminController');
 const cronService = require('./services/cronService');
 const emailService = require('./services/emailService');
-const BusinessSettings = require('./models/BusinessSettings');
 
 const app = express();
 
@@ -46,7 +44,6 @@ app.use('/api/appointments', appointmentRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/services', serviceRoutes);
 app.use('/api/gallery', galleryRoutes);
-app.use('/api/settings', settingsRoutes);
 app.use('/api/push', pushRoutes);
 app.use('/api/messages', messageRoutes);
 
@@ -96,33 +93,6 @@ app.use((err, req, res, next) => {
 });
 
 /* ========================
-   DEFAULT SETTINGS CREATION
-======================== */
-async function ensureSettings() {
-  try {
-    const exists = await BusinessSettings.findOne();
-
-    if (!exists) {
-      await BusinessSettings.create({
-        workingHours: {
-          sunday: { start: '09:00', end: '19:00', breaks: [], enabled: true },
-          monday: { start: '09:00', end: '19:00', breaks: [], enabled: true },
-          tuesday: { start: '09:00', end: '19:00', breaks: [], enabled: true },
-          wednesday: { start: '09:00', end: '19:00', breaks: [], enabled: true },
-          thursday: { start: '09:00', end: '19:00', breaks: [], enabled: true },
-          friday: { start: '09:00', end: '14:00', breaks: [], enabled: true },
-          saturday: { start: '09:00', end: '14:00', breaks: [], enabled: true }
-        }
-      });
-
-      console.log('✅ Default business settings created');
-    }
-  } catch (err) {
-    console.error('❌ Error in ensureSettings:', err);
-  }
-}
-
-/* ========================
    INITIALIZATION & START SERVER
 ======================== */
 const PORT = process.env.PORT || 5001;
@@ -136,7 +106,6 @@ app.listen(PORT, () => {
 
   connectDB()
     .then(async () => {
-      await ensureSettings();
       await adminController.createAdmin();
       cronService.start();
       console.log('✅ Background initialization completed successfully');

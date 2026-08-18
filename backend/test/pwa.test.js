@@ -29,6 +29,15 @@ test('dashboard exposes only moving management and gallery sections', () => {
   assert.ok(dashboard.indexOf('<h2>הוספת הובלה</h2>') < dashboard.indexOf('<h2>גלריה</h2>'));
 });
 
+test('appointments are not restricted by availability or working hours', () => {
+  const routes = read('backend/routes/appointmentRoutes.js');
+  const booking = read('backend/controllers/bookingController.js');
+  const server = read('backend/server.js');
+  assert.doesNotMatch(routes, /available\/:date|availabilityController/);
+  assert.doesNotMatch(booking, /workingHours|dateOverrides|BusinessSettings/);
+  assert.doesNotMatch(server, /api\/settings|ensureSettings|workingHours/);
+});
+
 test('dashboard defaults to today and offers a WhatsApp confirmation after creation', () => {
   const dashboard = read('frontend/dashboard.js');
   assert.match(dashboard, /\$\('dateFilter'\)\.value=today/);
@@ -100,7 +109,7 @@ test('iOS date and time fields use the same mobile dimensions as other controls'
   assert.match(dashboardCss, /input\[type="date"\].*-webkit-appearance:none/);
   assert.match(dashboardCss, /min-inline-size:0/);
   assert.match(dashboardHtml, /dashboard\.css\?v=4/);
-  assert.match(worker, /hovalot-owner-pwa-v3/);
+  assert.match(worker, /hovalot-owner-pwa-v4/);
 });
 
 test('gallery starts on the left and advances with the right arrow', () => {

@@ -1,28 +1,12 @@
 const jwt = require('jsonwebtoken');
 const Appointment = require('../models/Appointment');
 const Service = require('../models/Service');
-const BusinessSettings = require('../models/BusinessSettings');
 const {
   jerusalemDateTimeToUtc,
   getAppointmentInstant
 } = require('../utils/timeZone');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'supersecretkey';
-
-function getDayKey(dateString) {
-  const dayMap = [
-    'sunday',
-    'monday',
-    'tuesday',
-    'wednesday',
-    'thursday',
-    'friday',
-    'saturday'
-  ];
-
-  const calendarDate = new Date(`${dateString}T12:00:00Z`);
-  return dayMap[calendarDate.getUTCDay()];
-}
 
 function isAuthenticatedAdmin(req) {
   try {
@@ -88,40 +72,6 @@ exports.createAppointment = async (req, res) => {
 
     const duration = Number(serviceDoc.duration) || 30;
     const requestedEnd = new Date(appointmentDateTime.getTime() + duration * 60000);
-
-    const settings = await BusinessSettings.findOne();
-    const dateOverride = (settings?.dateOverrides || []).find((item) => item.date === date);
-    const daySettings = dateOverride || settings?.workingHours?.[getDayKey(date)];
-
-    if (!daySettings || !daySettings.enabled) {
-      return res.status(400).json({
-        success: false,
-        error: 'העסק סגור ביום שנבחר'
-      });
-    }
-
-    const workStart = jerusalemDateTimeToUtc(date, daySettings.start);
-    const workEnd = jerusalemDateTimeToUtc(date, daySettings.end);
-
-    if (appointmentDateTime < workStart || requestedEnd > workEnd) {
-      return res.status(400).json({
-        success: false,
-        error: 'התור חייב להתחיל ולהסתיים בתוך שעות הפעילות'
-      });
-    }
-
-    const breakConflict = (daySettings.breaks || []).some((breakItem) => {
-      const breakStart = jerusalemDateTimeToUtc(date, breakItem.start);
-      const breakEnd = jerusalemDateTimeToUtc(date, breakItem.end);
-      return appointmentDateTime < breakEnd && requestedEnd > breakStart;
-    });
-
-    if (breakConflict) {
-      return res.status(409).json({
-        success: false,
-        error: 'השעה שנבחרה נמצאת בזמן הפסקה'
-      });
-    }
 
     const dayStart = jerusalemDateTimeToUtc(date, '00:00');
     const dayEnd = jerusalemDateTimeToUtc(date, '23:59');
