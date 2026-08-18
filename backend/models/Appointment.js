@@ -48,6 +48,18 @@ const appointmentSchema = new mongoose.Schema({
     match: [/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, 'פורמט שעה לא תקין']
   },
 
+  timeType: {
+    type: String,
+    enum: ['exact', 'range'],
+    default: 'exact'
+  },
+
+  endTime: {
+    type: String,
+    default: '',
+    match: [/^$|^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, 'פורמט שעת סיום לא תקין']
+  },
+
   status: {
     type: String,
     enum: ['pending', 'confirmed', 'cancelled', 'completed', 'no-show'],

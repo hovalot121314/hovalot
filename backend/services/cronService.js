@@ -36,7 +36,7 @@ class CronService {
         for (const admin of admins) {
           const result = await pushService.sendToAdmin(admin._id, {
             title: 'תזכורת להובלה מחר',
-            body: `${appointment.customerName} — ${formatJerusalemDate(instant)} בשעה ${appointment.time}, מ-${appointment.pickupAddress} אל ${appointment.destinationAddress}`,
+            body: `${appointment.customerName} — ${formatJerusalemDate(instant)} ${appointment.timeType === 'range' && appointment.endTime ? `בין ${appointment.time} ל-${appointment.endTime}` : `בשעה ${appointment.time}`}, מ-${appointment.pickupAddress} אל ${appointment.destinationAddress}`,
             url: './dashboard.html',
             tag: `owner-moving-reminder-${appointment._id}`,
             appointmentId: appointment._id

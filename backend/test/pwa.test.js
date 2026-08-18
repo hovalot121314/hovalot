@@ -109,7 +109,22 @@ test('iOS date and time fields use the same mobile dimensions as other controls'
   assert.match(dashboardCss, /input\[type="date"\].*-webkit-appearance:none/);
   assert.match(dashboardCss, /min-inline-size:0/);
   assert.match(dashboardHtml, /dashboard\.css\?v=4/);
-  assert.match(worker, /hovalot-owner-pwa-v4/);
+  assert.match(worker, /hovalot-owner-pwa-v5/);
+});
+
+test('moving time supports an exact hour or a validated time range', () => {
+  const model = read('backend/models/Appointment.js');
+  const booking = read('backend/controllers/bookingController.js');
+  const dashboardHtml = read('frontend/dashboard.html');
+  const dashboardJs = read('frontend/dashboard.js');
+  const cron = read('backend/services/cronService.js');
+  assert.match(model, /timeType/);
+  assert.match(model, /endTime/);
+  assert.match(booking, /שעת הסיום חייבת להיות מאוחרת משעת ההתחלה/);
+  assert.match(dashboardHtml, /טווח שעות/);
+  assert.match(dashboardHtml, /movingEndTime/);
+  assert.match(dashboardJs, /timeText/);
+  assert.match(cron, /appointment\.endTime/);
 });
 
 test('gallery starts on the left and advances with the right arrow', () => {

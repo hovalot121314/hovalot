@@ -26,12 +26,18 @@ function isAuthenticatedAdmin(req) {
 exports.createAppointment = async (req, res) => {
   try {
     const { customerName, customerPhone, pickupAddress, destinationAddress, service, date, time } = req.body;
+    const timeType = req.body.timeType === 'range' ? 'range' : 'exact';
+    const endTime = timeType === 'range' ? String(req.body.endTime || '').trim() : '';
 
     if (!customerName || !customerPhone || !pickupAddress || !destinationAddress || !service || !date || !time) {
       return res.status(400).json({
         success: false,
         error: 'כל השדות הם חובה'
       });
+    }
+
+    if (timeType === 'range' && (!/^([0-1]?\d|2[0-3]):[0-5]\d$/.test(endTime) || endTime <= time)) {
+      return res.status(400).json({ success: false, error: 'שעת הסיום חייבת להיות מאוחרת משעת ההתחלה' });
     }
 
     const createdByAdmin = isAuthenticatedAdmin(req);
@@ -109,6 +115,8 @@ exports.createAppointment = async (req, res) => {
       duration,
       date: appointmentDateTime,
       time,
+      timeType,
+      endTime,
       status: 'confirmed',
       approvalRequestedAt: null,
       approvalDecisionAt: now,

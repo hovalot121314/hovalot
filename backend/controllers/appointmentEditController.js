@@ -24,6 +24,8 @@ exports.updateAppointment = async (req, res) => {
       service: appointment.service,
       date: getJerusalemDateString(new Date(appointment.date)),
       time: appointment.time,
+      timeType: appointment.timeType || 'exact',
+      endTime: appointment.endTime || '',
       duration: Number(appointment.duration),
       status: appointment.status,
       notes: appointment.notes || ''
@@ -35,6 +37,8 @@ exports.updateAppointment = async (req, res) => {
     const destinationAddress = String(req.body.destinationAddress ?? appointment.destinationAddress).trim();
     const service = String(req.body.service ?? appointment.service).trim();
     const time = String(req.body.time ?? appointment.time).trim();
+    const timeType = req.body.timeType === 'range' ? 'range' : 'exact';
+    const endTime = timeType === 'range' ? String(req.body.endTime || '').trim() : '';
     const status = String(req.body.status ?? appointment.status);
     const notes = String(req.body.notes ?? appointment.notes ?? '').trim();
 
@@ -51,6 +55,11 @@ exports.updateAppointment = async (req, res) => {
 
     if (!/^([0-1]?\d|2[0-3]):[0-5]\d$/.test(time)) {
       return res.status(400).json({ success: false, error: 'שעה לא תקינה' });
+    }
+
+
+    if (timeType === 'range' && (!/^([0-1]?\d|2[0-3]):[0-5]\d$/.test(endTime) || endTime <= time)) {
+      return res.status(400).json({ success: false, error: 'שעת הסיום חייבת להיות מאוחרת משעת ההתחלה' });
     }
 
     if (!ALLOWED_STATUSES.includes(status)) {
@@ -107,6 +116,8 @@ exports.updateAppointment = async (req, res) => {
 
     const scheduleChanged =
       previous.time !== time ||
+      previous.timeType !== timeType ||
+      previous.endTime !== endTime ||
       previous.duration !== duration ||
       previous.date !== dateString;
 
@@ -126,6 +137,8 @@ exports.updateAppointment = async (req, res) => {
     appointment.duration = duration;
     appointment.date = newStart;
     appointment.time = time;
+    appointment.timeType = timeType;
+    appointment.endTime = endTime;
     appointment.status = status;
     appointment.notes = notes;
 

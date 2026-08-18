@@ -1,5 +1,5 @@
-const CACHE='hovalot-owner-pwa-v4';
-const ASSETS=['./dashboard.html','./admin.html','./dashboard.css','./dashboard.js','./moving-manifest.webmanifest','./images/Logo.png'];
+const CACHE='hovalot-owner-pwa-v5';
+const ASSETS=['./dashboard.html','./admin.html','./dashboard.css','./dashboard.js?v=3','./moving-manifest.webmanifest','./images/Logo.png'];
 self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS)).then(()=>self.skipWaiting())));
 self.addEventListener('activate',event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key!==CACHE).map(key=>caches.delete(key)))).then(()=>self.clients.claim())));
 self.addEventListener('fetch',event=>{if(event.request.method==='GET')event.respondWith(fetch(event.request).catch(()=>caches.match(event.request)))});
