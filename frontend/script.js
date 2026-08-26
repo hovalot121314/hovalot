@@ -1,7 +1,7 @@
 const IS_LOCAL = ["localhost", "127.0.0.1"].includes(window.location.hostname);
 const API_URL = window.API_URL || (IS_LOCAL
   ? "http://localhost:5001/api"
-  : "https://hovalot-production.up.railway.app/api");
+  : "https://hovalot-production-2bdd.up.railway.app/api");
 const $ = (q) => document.querySelector(q);
 let galleryPhotos = [];
 let activePhotoIndex = 0;
